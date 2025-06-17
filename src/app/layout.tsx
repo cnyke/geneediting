@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -18,9 +19,9 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <header style={{ display: 'flex', alignItems: 'center', padding: '1rem 0 2rem 0' }}>
-          <a href="/" title="Back to main site">
+          <Link href="/" title="Back to main site">
             <img src="/rc.png" alt="Home" style={{ height: '48px', width: 'auto', borderRadius: '50%' }} />
-          </a>
+          </Link>
         </header>
         <main style={{ maxWidth: '900px', margin: '0 auto' }}>{children}</main>
       </body>
