@@ -10,7 +10,7 @@ export async function GET() {
     try {
       const file = await fs.readFile(DATA_FILE, 'utf-8');
       data = JSON.parse(file);
-    } catch (e) {
+    } catch {
       // File may not exist yet
       data = [];
     }
@@ -25,7 +25,7 @@ export async function GET() {
     }
 
     return NextResponse.json({ counts });
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: 'Server error' }, { status: 500 });
   }
 } 

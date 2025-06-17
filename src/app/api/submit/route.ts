@@ -16,7 +16,7 @@ export async function POST(req: NextRequest) {
     try {
       const file = await fs.readFile(DATA_FILE, 'utf-8');
       data = JSON.parse(file);
-    } catch (e) {
+    } catch {
       // File may not exist yet
       data = [];
     }
@@ -26,7 +26,7 @@ export async function POST(req: NextRequest) {
     await fs.writeFile(DATA_FILE, JSON.stringify(data, null, 2));
 
     return NextResponse.json({ success: true });
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: 'Server error' }, { status: 500 });
   }
 } 

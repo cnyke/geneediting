@@ -55,7 +55,7 @@ export default function Home() {
       } else {
         setStatus("There was an error submitting your answers.");
       }
-    } catch (e) {
+    } catch {
       setStatus("There was an error submitting your answers.");
     }
   };
@@ -81,7 +81,7 @@ export default function Home() {
       <div style={{ marginBottom: '2rem', fontSize: '1.1rem', lineHeight: 1.6, maxWidth: 700 }}>
         <p>This project explores public opinion on the adoption of gene editing technologies.</p>
         <br></br>
-        <p>Humans are in the midst of a biotechnology revolution. This offers us the chance—unprecedented in the entire 3.5 billion year course of evolution on this planet—to intentionally change the course of the future of our species. There are some genetic diseases which could be eliminated. There are clinics which allow patients to choose the sex of their child. The technology to choose a child's hair and eye color is available now. Can we change the next generation's predisposition to depression or alcoholism? Should we?</p>
+        <p>Humans are in the midst of a biotechnology revolution. This offers us the chance—unprecedented in the entire 3.5 billion year course of evolution on this planet—to intentionally change the course of the future of our species. There are some genetic diseases which could be eliminated. There are clinics which allow patients to choose the sex of their child. The technology to choose a child&apos;s hair and eye color is available now. Can we change the next generation&apos;s predisposition to depression or alcoholism? Should we?</p>
         <br></br>
         <p>The disorders and physical features represented here are traits which could potentially be affected by human gene editing or embryo screening.</p>
         <br></br>
