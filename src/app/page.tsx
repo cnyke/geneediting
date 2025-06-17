@@ -168,7 +168,7 @@ export default function Home() {
       <div style={{ marginTop: '3rem' }}>
         <h2 style={{ fontWeight: 600, fontSize: '1.3rem', marginBottom: '1rem' }}>Results</h2>
         <p style={{ marginBottom: '1.5rem', fontSize: '1rem', lineHeight: 1.5, maxWidth: 700, color: '#ababab' }}>
-          This child represents the society of decades to come by displaying respondents' opinions. The brightness of each organ reflects the number of people who would choose it for their children. See below for a breakdown of the results. 
+          This child represents the society of decades to come by displaying respondents&apos; opinions. The brightness of each organ reflects the number of people who would choose it for their children. See below for a breakdown of the results. 
         </p>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem', alignItems: 'center' }}>
           {/* SVG Visualization */}
