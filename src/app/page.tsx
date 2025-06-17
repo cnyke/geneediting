@@ -6,7 +6,7 @@ const QUESTIONS = [
   "If you could, would you choose the eye color of your child?",
   "Would you choose the sex of your child?",
   "Huntingtons disease is a genetic neurodegenerative disorder which begins with mood changes and jerky walking, and eventually leads to dementia and difficulty with coordinated movement. It involves the basal ganglia, the brain region shown here. If you could ensure your child would not be born with Huntingtons disease, would you?",
-  "Hemophilia is a genetic disorder which impedes the ability of blood to clot, which stops bleeding when a blood vessel is broken. If you could ensure your child would not be born with haemophilia, would you?",
+  "Hemophilia is a genetic disorder which impedes the ability of blood to clot, which would normally stop bleeding when a blood vessel is broken. If you could ensure your child would not be born with hemophilia, would you?",
   "If you could choose the height of your child, would you?",
   "Tay-Sachs disease is a genetic disorder which leads to deterioration of mental and physical abilities. Here it is represented by the brain stem. If you could ensure your child would not be born with Tay-Sachs disease, would you?",
   "If possible, would you decrease the likelihood of your child developing alcoholism?",
