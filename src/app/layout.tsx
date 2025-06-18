@@ -19,7 +19,7 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <header style={{ display: 'flex', alignItems: 'center', padding: '1rem 0 2rem 0' }}>
-          <Link href="/" title="Back to main site">
+          <Link href="https://resiliencecontinuum.com" title="Back to main site">
             <img src="/rc.png" alt="Home" style={{ height: '48px', width: 'auto', borderRadius: '50%' }} />
           </Link>
         </header>
