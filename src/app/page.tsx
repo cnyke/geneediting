@@ -49,14 +49,23 @@ export default function Home() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ answers }),
       });
+      
+      const data = await res.json();
+      
       if (res.ok) {
         setStatus("Thank you for your submission!");
         setAnswers(Array(11).fill(null));
+        // Refresh the aggregate data
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
       } else {
-        setStatus("There was an error submitting your answers.");
+        console.error('Submit error:', data);
+        setStatus(`Error: ${data.error || 'Failed to submit'} ${data.details ? `(${data.details})` : ''}`);
       }
-    } catch {
-      setStatus("There was an error submitting your answers.");
+    } catch (error) {
+      console.error('Network error:', error);
+      setStatus("Network error - please check your connection and try again.");
     }
   };
 

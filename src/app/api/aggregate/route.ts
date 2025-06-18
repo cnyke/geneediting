@@ -12,11 +12,20 @@ interface SubmissionEntry {
 export async function GET() {
   try {
     let data: SubmissionEntry[] = [];
+    let dataSource = 'none';
+
+    console.log('Aggregate request - Environment check:');
+    console.log('- KV_REST_API_URL exists:', !!process.env.KV_REST_API_URL);
+    console.log('- KV_REST_API_TOKEN exists:', !!process.env.KV_REST_API_TOKEN);
+    console.log('- NODE_ENV:', process.env.NODE_ENV);
 
     // Try to get data from KV database first if running on Vercel
     if (process.env.KV_REST_API_URL) {
+      console.log('Attempting to read from KV database...');
       try {
         const { kv } = await import('@vercel/kv');
+        console.log('KV module imported successfully');
+        
         const count = (await kv.get('submissions_count') as number) || 0;
         console.log('Found', count, 'submissions in KV database');
         
@@ -27,14 +36,18 @@ export async function GET() {
           }
         }
         console.log('Successfully loaded', data.length, 'entries from KV database');
+        dataSource = 'kv';
       } catch (kvError) {
-        console.error('KV database error:', kvError);
+        console.error('KV database error details:', kvError);
+        console.error('KV error message:', kvError instanceof Error ? kvError.message : 'Unknown KV error');
         // Fall back to file storage
+        dataSource = 'kv_failed';
       }
     }
 
     // Fallback: Use file storage if KV failed or not available
     if (data.length === 0) {
+      console.log('Attempting to read from file storage...');
       try {
         const file = await fs.readFile(DATA_FILE, 'utf-8');
         const parsedData = JSON.parse(file);
@@ -47,9 +60,11 @@ export async function GET() {
           );
         }
         console.log('Successfully loaded', data.length, 'entries from file');
+        dataSource = dataSource === 'kv_failed' ? 'file_fallback' : 'file';
       } catch (error) {
         console.log('File read error (expected if file doesn\'t exist):', error);
         data = [];
+        dataSource = 'no_data';
       }
     }
 
@@ -67,9 +82,21 @@ export async function GET() {
     }
 
     console.log('Returning aggregated counts:', counts);
-    return NextResponse.json({ counts });
+    console.log('Data source:', dataSource, 'Total entries:', data.length);
+    
+    return NextResponse.json({ 
+      counts, 
+      metadata: { 
+        totalEntries: data.length, 
+        dataSource,
+        timestamp: new Date().toISOString()
+      }
+    });
   } catch (error) {
     console.error('Aggregate API error:', error);
-    return NextResponse.json({ error: 'Server error' }, { status: 500 });
+    return NextResponse.json({ 
+      error: 'Server error', 
+      details: error instanceof Error ? error.message : 'Unknown error'
+    }, { status: 500 });
   }
 } 
