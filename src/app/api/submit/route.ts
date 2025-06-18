@@ -4,12 +4,9 @@ import path from 'path';
 
 const DATA_FILE = path.join(process.cwd(), 'data.json');
 
-// Try to import Vercel KV, fallback gracefully if not available
-let kv: any = null;
-try {
-  kv = require('@vercel/kv').kv;
-} catch {
-  console.log('Vercel KV not available, using file storage');
+interface SubmissionEntry {
+  answers: boolean[];
+  timestamp: number;
 }
 
 export async function POST(req: NextRequest) {
@@ -22,13 +19,14 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Invalid input' }, { status: 400 });
     }
 
-    const newEntry = { answers: body.answers, timestamp: Date.now() };
+    const newEntry: SubmissionEntry = { answers: body.answers, timestamp: Date.now() };
 
     // Use KV database in production if available
-    if (kv && process.env.KV_REST_API_URL) {
+    if (process.env.KV_REST_API_URL) {
       try {
+        const { kv } = await import('@vercel/kv');
         // Get existing entries count for unique key
-        const count = await kv.get('submissions_count') || 0;
+        const count = (await kv.get('submissions_count') as number) || 0;
         
         // Store the submission
         await kv.set(`submission_${count}`, newEntry);
@@ -44,10 +42,18 @@ export async function POST(req: NextRequest) {
     }
 
     // Development/fallback: Use file storage
-    let data = [];
+    let data: SubmissionEntry[] = [];
     try {
       const file = await fs.readFile(DATA_FILE, 'utf-8');
-      data = JSON.parse(file);
+      const parsedData = JSON.parse(file);
+      if (Array.isArray(parsedData)) {
+        data = parsedData.filter(entry => 
+          entry && 
+          entry.answers && 
+          Array.isArray(entry.answers) && 
+          typeof entry.timestamp === 'number'
+        );
+      }
       console.log('Successfully read existing data, entries:', data.length);
     } catch (error) {
       console.log('File read error (expected if file doesn\'t exist):', error);
